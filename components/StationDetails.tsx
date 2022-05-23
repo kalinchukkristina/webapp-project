@@ -24,8 +24,8 @@ export default function StationDetails({ route, navigation }) {
 
     const filteredTrainsOnStation = delayedModels.getDelayedOneStationManyTrains(delayedStation);
 
-    const infoFillteredTrains = filteredTrainsOnStation.map((train) => {
-        return <View style={Base.details}>
+    const infoFillteredTrains = filteredTrainsOnStation.map((train, index) => {
+        return <View style={Base.details} key={index}>
             <Text style={Typography.train}>Från: {station.AdvertisedLocationName}</Text>
                 <Text style={Typography.train}>Till: {stationsModels.getStationName(train.ToLocation[0].LocationName, allStations)}</Text>
                 <Text>Beskrivning: {train.ActivityType}</Text>

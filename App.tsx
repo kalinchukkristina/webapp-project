@@ -6,11 +6,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Welcome from './components/Welcome';
 import Delays from './components/Delays';
+import Map from './components/Map';
+
 const Tab = createBottomTabNavigator();
 
 const routeIcons = {
   "Hem": "home",
-  "Förseningar": "train"
+  "Förseningar": "train",
+  "Karta": "map"
 };
 
 import { Base, Typography } from './styles';
@@ -32,6 +35,7 @@ export default function App() {
             >
           <Tab.Screen name="Hem" component={Welcome} />
           <Tab.Screen name="Förseningar" component={Delays} />
+          <Tab.Screen name="Karta" component={Map} />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>

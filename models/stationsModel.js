@@ -1,3 +1,5 @@
+import delayedModels from './delayedModel';
+
 const stations = {
     getStations: async function getStations() {
         const response = await fetch('https://trafik.emilfolino.se/stations');
@@ -13,6 +15,10 @@ const stations = {
             } 
         }
         return akronym;
+    },
+
+    getStationCoordinates: function getStationCoordinates(station) {
+        return station.Geometry.WGS84.split("(")[1].split(")")[0].split(" ");
     }
 }
 
