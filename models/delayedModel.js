@@ -54,6 +54,19 @@ const delayed = {
         return listOfInfo;
     },
 
+    getDelayedByStationNotAsync: function getDelayedByStation(station, listOfDelayed) {
+        const listOfInfo = [];
+        for(let i=0; i < listOfDelayed.length; i++) {
+            if (listOfDelayed[i].FromLocation !== undefined ) {
+                if (listOfDelayed[i].FromLocation[0].LocationName === station) {
+                    listOfInfo.push(listOfDelayed[i])
+                }
+            }
+        }
+
+        return listOfInfo;
+    },
+
     // filters out trains and removes duplicates, returns a list of trains with the last record about them
     getDelayedOneStationManyTrains: function getDelayedOneStationManyTrains(allTrainsOnStation) {
         const manyTrains = [];
