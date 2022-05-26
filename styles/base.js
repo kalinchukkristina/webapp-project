@@ -29,3 +29,11 @@ export const listOfStations = {
     backgroundColor: 'red',
     marginBottom: 3
 }
+
+export const base2 = {
+    flex: 1,
+    padding: 12,
+    lineHeight: 1.4,
+    color: '#333',
+    marginBottom: 30,
+};
