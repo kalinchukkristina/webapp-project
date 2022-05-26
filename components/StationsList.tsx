@@ -28,7 +28,7 @@ export default function StationsList({ route, navigation }) {
     useEffect( () => {
         getAllStations();
         getListOfAllExistingStations();
-    }, [stations]);
+    }, []);
 
     const listOfStationsWithDelays = stations
         .map((station, index) => {

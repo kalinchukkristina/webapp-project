@@ -19,7 +19,7 @@ export default function StationsDropDown(props) {
             <Picker.Item label={chosenStation.AdvertisedLocationName} value={chosenStation.LocationSignature} key={index}/>
         )
     });
-    console.log(props.station);
+
     return (
         <Picker
             selectedValue={props.station?.LocationSignature}

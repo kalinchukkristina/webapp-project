@@ -4,7 +4,6 @@ import StationsDropDown from './StationsDropDown';
 import Station from './../../interfaces/station';
 import userModel from './../../models/user';
 import storage from "../../models/storage";
-import user from "./../../models/user";
 
 
 export default function AddStation ({ navigation }) {
@@ -13,12 +12,9 @@ export default function AddStation ({ navigation }) {
 
     async function addStation() {
         const token = await storage.readToken();
-//        let res = await userModel.addData(favStation, token);
-        console.log(favStation)
-//        await userModel.getAllUsers();
-//        let res = await userModel.showData(token.token);
-//        console.log(res);
-//        return res;
+        await userModel.addData(favStation, token);
+
+        navigation.navigate("Visa FavoritStationer", { reload: true });
     }
 
 

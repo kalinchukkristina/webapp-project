@@ -55,7 +55,7 @@ export default function StationDetails({ route, navigation }) {
     } else {
         return (
             <View>
-                <Text>Information är inte längre tillgänglig.</Text>
+                <Text>Ingen information om stationen.</Text>
             </View>
         )
     }
