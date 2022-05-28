@@ -6,6 +6,15 @@ export const header1 = {
     fontWeight: 'bold',
 };
 
+export const header3 = {
+    fontSize: 23,
+    color: '#fafcff',
+    marginTop: 15,
+    width: 200,
+    textAlign:'center',
+    marginBottom: 10
+};
+
 export const delayes = {
     fontSize: 35,
     color: '#db594f',

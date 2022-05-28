@@ -8,7 +8,6 @@ import storage from "../../models/storage";
 
 export default function AddStation ({ navigation }) {
     const [ favStation, setFavStation ] = useState<Partial<Station>>({});
-    
 
     async function addStation() {
         const token = await storage.readToken();

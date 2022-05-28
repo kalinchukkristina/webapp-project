@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import MapView from 'react-native-maps';
-import { Marker } from "react-native-maps";
+import { Marker, Callout } from "react-native-maps";
 
 import delayedModels from './../models/delayedModel';
 import stationsModels from './../models/stationsModel';
@@ -37,16 +37,59 @@ export default function Map () {
     const markers = stations.map((station, index) => {
         let coordinates = stationsModels.getStationCoordinates(station);
         let info = delayedModels.getDelayedByStationNotAsync(station.LocationSignature, delayed);
+        let filteredTrains = delayedModels.getDelayedOneStationManyTrains(info);
         if (info[info.length-1] !== undefined) {
-            let description = `Train: ${info[info.length-1].AdvertisedTrainIdent} Uppskattad ankomst: ${info[info.length-1].AdvertisedTimeAtLocation}`;
-            return (
-                <Marker
-                key={index}
-                coordinate={{latitude: parseFloat(coordinates[1]), longitude: parseFloat(coordinates[0])}}
-                title={station.AdvertisedLocationName}
-                description={ description }
-                />
-            )
+            if (filteredTrains.length == 1) {
+                    return (
+                    <Marker
+                    key={index}
+                    coordinate={{latitude: parseFloat(coordinates[1]), longitude: parseFloat(coordinates[0])}}
+                    title={station.AdvertisedLocationName}
+                    >
+                        <Callout tooltip={true}>
+                            <View style={styles.callout}>
+                                <Text style={styles.station}>
+                                    {station.AdvertisedLocationName}
+                                </Text>
+                                <Text>
+                                    Train: {info[info.length-1].AdvertisedTrainIdent}
+                                </Text>
+                                <Text>
+                                    Uppskattad ankomst: {info[info.length-1].AdvertisedTimeAtLocation}
+                                </Text>
+                            </View>
+                            <View style={styles.arrowBorder} />
+                            <View style={styles.arrow}/>
+                        </Callout>
+                    </Marker>
+                )
+            } else if (filteredTrains.length > 1) {
+                    return (
+                        <Marker
+                        key={index}
+                        coordinate={{latitude: parseFloat(coordinates[1]), longitude: parseFloat(coordinates[0])}}
+                        title={station.AdvertisedLocationName}
+                    >
+                        <Callout tooltip={true} style={styles.callout}>
+                            <Text style={styles.station}>
+                                {station.AdvertisedLocationName}
+                            </Text>
+                        {filteredTrains.map((train, index) => { 
+                            return (
+                            <View key={index} style={styles.aFewTrains}>
+                                <Text>
+                                    Train: {train.AdvertisedTrainIdent}
+                                </Text>
+                                <Text>
+                                    Uppskattad ankomst: {train.AdvertisedTimeAtLocation}
+                                </Text>
+                            </View>
+                        )
+                        })}
+                        </Callout>
+                    </Marker>
+                    )
+            }
         } else {
             return (
                 <Marker
@@ -86,4 +129,31 @@ const styles = StyleSheet.create({
     map: {
         ...StyleSheet.absoluteFillObject,
     },
+    callout: {
+        width: 200,
+        backgroundColor: '#fff',
+        padding:10
+    },
+    arrow: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        borderTopColor: '#fff',
+        borderWidth: 16,
+        alignSelf: 'center',
+        marginTop: -32
+    },
+    arrowBorder: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        borderTopColor: '#007a87',
+        borderWidth: 16,
+        alignSelf: 'center',
+        marginTop: -2
+    },
+    station: {
+        fontWeight: 'bold'
+    },
+    aFewTrains: {
+        marginTop: 8
+    }
   });

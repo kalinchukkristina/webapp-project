@@ -13,7 +13,7 @@ export const background = {
 }
 
 export const header = {
-    flex: 0.4,
+    flex: 0.5,
     justifyContent:'flex-end',
     alignItems: 'center',
 }
@@ -37,3 +37,15 @@ export const base2 = {
     color: '#333',
     marginBottom: 30,
 };
+
+export const red = {
+    backgroundColor: 'red'
+};
+
+export const btn = {
+    borderTopWidth: 2,
+    borderColor: "black",
+    backgroundColor: '#e9f2f5',
+    marginTop: 50
+
+}
