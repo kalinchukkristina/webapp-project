@@ -69,9 +69,9 @@ export default function ListSavedStations({ route, navigation, setIsLoggedIn }) 
                 />
                 <Button
                 title="Logga ut"
-                onPress={() => {
+                onPress={async () => {
                     setIsLoggedIn(false);
-                    storage.deleteToken();
+                    await storage.deleteToken();
                 }}
                 />
             </View>
