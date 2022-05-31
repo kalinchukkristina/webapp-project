@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Button, Text } from 'react-native';
 import storage from "../../models/storage";
@@ -69,7 +68,7 @@ export default function ListSavedStations({ route, navigation, setIsLoggedIn }) 
                 />
                 <Button
                 title="Logga ut"
-                onPress={async () => {
+                onPress={async() => {
                     setIsLoggedIn(false);
                     await storage.deleteToken();
                 }}

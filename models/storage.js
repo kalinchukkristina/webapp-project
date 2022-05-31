@@ -14,6 +14,7 @@ const storage = {
             // saving error
         }
     },
+
     readToken: async function readToken(): Promise<any> {
         try {
             const jsonValue = await AsyncStorage.getItem('@token');
@@ -22,6 +23,7 @@ const storage = {
             // error reading value
         }
     },
+
     deleteToken: async function deleteToken() {
         await AsyncStorage.removeItem('@token');
     }

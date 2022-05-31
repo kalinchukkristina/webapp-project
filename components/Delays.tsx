@@ -4,7 +4,7 @@ import StationDetails from './StationDetails';
 
 const Stack = createNativeStackNavigator();
 
-export default function Delays(props) {
+export default function Delays() {
     return (
         <Stack.Navigator initialRouteName="Stations">
             <Stack.Screen name="Station" component={StationsList} />

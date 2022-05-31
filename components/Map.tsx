@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, ScrollView } from "react-native";
 import MapView from 'react-native-maps';
 import { Marker, Callout } from "react-native-maps";
+import * as Location from 'expo-location';
 
 import delayedModels from './../models/delayedModel';
 import stationsModels from './../models/stationsModel';
@@ -9,6 +10,8 @@ import stationsModels from './../models/stationsModel';
 export default function Map () {
     const [ stations, setStations ] = useState([]);
     const [ delayed, setDelayed ] = useState([]);
+    const [ allStations, setAllStations ] = useState([]);
+    const [locationMarker, setLocationMarker] = useState(null);
 
     async function getAllStations() {
         try {
@@ -17,6 +20,11 @@ export default function Map () {
         } catch(e) {
             //error
         }
+    };
+
+    async function getListOfAllExistingStations() {
+        const listOfAllStations = await stationsModels.getStations();
+        setAllStations(listOfAllStations);
     };
 
     async function getDelayed() {
@@ -32,6 +40,27 @@ export default function Map () {
     useEffect( () => {
         getAllStations();
         getDelayed();
+        getListOfAllExistingStations();
+
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+    
+            if (status !== 'granted') {
+                setErrorMessage('Permission to access location was denied');
+                return;
+            }
+
+            const currentLocation = await Location.getCurrentPositionAsync({});
+
+            setLocationMarker(<Marker
+                coordinate={{
+                    latitude: currentLocation.coords.latitude,
+                    longitude: currentLocation.coords.longitude
+                }}
+                title="Min plats"
+                pinColor="blue"
+            />);
+        })();
     }, []);
 
     const markers = stations.map((station, index) => {
@@ -52,10 +81,10 @@ export default function Map () {
                                     {station.AdvertisedLocationName}
                                 </Text>
                                 <Text>
-                                    Train: {info[info.length-1].AdvertisedTrainIdent}
+                                    Tågnummer: {info[info.length-1].AdvertisedTrainIdent}
                                 </Text>
                                 <Text>
-                                    Uppskattad ankomst: {info[info.length-1].AdvertisedTimeAtLocation}
+                                    Uppskattad ankomst till {stationsModels.getStationName((filteredTrains[0].ToLocation[0].LocationName), allStations )}: {info[info.length-1].AdvertisedTimeAtLocation}
                                 </Text>
                             </View>
                             <View style={styles.arrowBorder} />
@@ -76,14 +105,14 @@ export default function Map () {
                             </Text>
                         {filteredTrains.map((train, index) => { 
                             return (
-                            <View key={index} style={styles.aFewTrains}>
+                            <ScrollView key={index} style={styles.aFewTrains}>
                                 <Text>
-                                    Train: {train.AdvertisedTrainIdent}
+                                    Tågnummer: {train.AdvertisedTrainIdent}
                                 </Text>
                                 <Text>
-                                    Uppskattad ankomst: {train.AdvertisedTimeAtLocation}
+                                    Uppskattad ankomst till {stationsModels.getStationName((train.ToLocation[0].LocationName), allStations )}: {train.AdvertisedTimeAtLocation}
                                 </Text>
-                            </View>
+                            </ScrollView>
                         )
                         })}
                         </Callout>
@@ -96,7 +125,7 @@ export default function Map () {
                 key={index}
                 coordinate={{latitude: parseFloat(coordinates[1]), longitude: parseFloat(coordinates[0])}}
                 title={station.AdvertisedLocationName}
-                description={ "information unavailable" }
+                description={ "Information unavailable" }
                 />
             )
         }
@@ -114,6 +143,7 @@ export default function Map () {
                     longitudeDelta: 13.0,
                 }}>
                 {markers}
+                {locationMarker}
             </MapView>
         </View>
       );

@@ -35,7 +35,6 @@ export default function StationsList({ route, navigation }) {
             return <Button 
                 title={station.AdvertisedLocationName}
                 key={index}
-                
                 onPress={() => {
                     navigation.navigate('Details', {
                         station: station,

@@ -1,6 +1,5 @@
 import config from "../config/config.json";
 
-
 const user = {
     addData: async function addData(station, token) {
         const newData = {
